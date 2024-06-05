@@ -1,0 +1,1 @@
+export { type IconWithLabelTypeProps } from './iconWithLabel.type'

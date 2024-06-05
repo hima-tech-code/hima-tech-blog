@@ -1,0 +1,8 @@
+import { Post } from 'post'
+
+model Tag {
+  tagId Int @id @default(autoincrement())
+  tagName String
+  post Post @relation(fields: [postId], references: [postId])
+  postId Int
+}

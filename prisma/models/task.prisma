@@ -1,0 +1,8 @@
+model Task {
+  taskId BigInt @id @default(autoincrement())
+  taskTitle String
+  taskDescription String
+  taskStatus String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
