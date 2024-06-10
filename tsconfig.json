@@ -26,7 +26,8 @@
       "@/componentsType/*": ["./src/types/components/*"],
       "@/db/*": ["./lib/prisma/*"],
       "@/models/*": ["./src/models/*"],
-      "@/dashboard/*": ["./src/app/(domains)/dashboard/*"]
+      "@/dashboard/*": ["./src/app/(domains)/dashboard/*"],
+      "@/blog/*": ["./src/app/(domains)/blog/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

@@ -39,5 +39,9 @@
     "terminal.ansiRed": "#CF6A4C",
     "terminal.ansiWhite": "#A7A7A7",
     "terminal.ansiYellow": "#F9EE98"
+  },
+  "[markdown]": {
+    "editor.quickSuggestions": true,
+    "editor.snippetSuggestions": "top"
   }
 }

@@ -12,24 +12,24 @@ export const sidebarPropsConst: SidebarProps[] = [
     icon: ChatBubbleLeftIcon,
     url: '/dashboard',
   },
-  {
-    id: 2,
-    title: 'タスク',
-    icon: ClipboardDocumentCheckIcon,
-    url: '/task'
-  },
-  {
-    id: 3,
-    title: 'カレンダー',
-    icon: CalendarDaysIcon,
-    url: '/calendar',
-  },
-  {
-    id: 4,
-    title: 'ブログ記事投稿',
-    icon: MegaphoneIcon,
-    url: '/post'
-  },
+  // {
+  //   id: 2,
+  //   title: 'タスク',
+  //   icon: ClipboardDocumentCheckIcon,
+  //   url: '/task'
+  // },
+  // {
+  //   id: 3,
+  //   title: 'カレンダー',
+  //   icon: CalendarDaysIcon,
+  //   url: '/calendar',
+  // },
+  // {
+  //   id: 4,
+  //   title: 'ブログ記事投稿',
+  //   icon: MegaphoneIcon,
+  //   url: '/post'
+  // },
   {
     id: 5,
     title: 'ブログ記事閲覧',

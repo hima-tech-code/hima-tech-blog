@@ -118,7 +118,7 @@ class PostDao {
         tagName: z.string({ message: 'tagNameには文字列型を入力してください' }).min(1, { message: 'tagNameには最低1文字以上を入力してください' }),
         postId: z.number({ message: 'postIdには数値型を入力してください' }).min(1, { message: 'postIdには最低1文字以上を入力してください' })
       })),
-      userId: 
+      userId: z.number({ message: 'userIdには数値型を入力して下さい' }).min(1, { message: 'userIdには最低1文字以上を入力して下さい' })
 
     }).safeParse(postData)
 
@@ -140,6 +140,7 @@ class PostDao {
           title: validatedData.data.title,
           description: validatedData.data.description,
           body: validatedData.data.body,
+          userId: validatedData.data.userId,
           tags: {
             create: validatedData.data.tags.map((item) => {
               return { tagId: item.tagId, tagName: item.tagName, postId: item.postId }
@@ -164,6 +165,103 @@ class PostDao {
         error: undefined
       })
       return response
+    }
+  }
+
+  async updatePost({ postId, post }: { postId: number, post: Partial<(Post & { tags: Tag[] })> }) {
+    if (typeof Number(postId) != 'number') {
+      const response = new ResponseReturn<Post>({
+        status: Status.BadRequest,
+        statusCode: StatusCode.BadRequest,
+        responseMessage: 'postIdに不正な値が入力されています',
+        data: undefined,
+        error: undefined,
+      })
+      return response
+    }
+
+    const rowData: Partial<(Post & { tags: Tag[] })> = {
+      postId: post.postId,
+      title: post.title,
+      description: post.description,
+      body: post.body,
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt,
+      userId: post.userId,
+      tags: post.tags
+    }
+
+    const validatedData = z.object({
+      postId: z.number({ message: 'postIdには数値型を入力して下さい' }).optional(),
+      title: z.string({ message: 'titleには文字列型を入力して下さい' }).optional(),
+      description: z.string({ message: 'descriptionには文字列型を入力して下さい' }).min(1, { message: 'descriptionには最低1文字以上を入力して下さい' }).optional(),
+      body: z.string({ message: 'bodyには文字列型を入力して下さい' }).min(1, { message: 'bodyには最低1文字以上を入力して下さい' }).optional(),
+      tags: z.array(z.object({
+        tagId: z.number({ message: 'tagIdには数値型を入力してください' }).min(1, { message: 'tagIdには最低1文字以上を入力してください' }),
+        tagName: z.string({ message: 'tagNameには文字列型を入力してください' }).min(1, { message: 'tagNameには最低1文字以上を入力してください' }),
+        postId: z.number({ message: 'postIdには数値型を入力してください' }).min(1, { message: 'postIdには最低1文字以上を入力してください' })
+      })),
+      userId: z.number({ message: 'userIdには数値型を入力して下さい' }).min(1, { message: 'userIdには最低1文字以上を入力して下さい' })
+    }).safeParse(rowData)
+
+    if (!validatedData.success) {
+      const response = new ResponseReturn<(Post & { tags: Tag[] })>({
+        status: Status.BadRequest,
+        statusCode: StatusCode.BadRequest,
+        responseMessage: 'バリデーションエラーになります',
+        data: undefined,
+        error: validatedData.error,
+      })
+      return response
+    }
+
+    try {
+      const updatePost = await this.prisma.post.update({
+        where: {
+          postId: postId
+        },
+        data: {
+          postId: validatedData.data.postId,
+          title: validatedData.data.title,
+          description: validatedData.data.description,
+          body: validatedData.data.body,
+          tags: {
+            create: validatedData.data.tags.map((item) => {
+              return { tagId: item.tagId, tagName: item.tagName, postId: item.postId }
+            })
+          }
+        }
+      })
+
+      const response = new ResponseReturn<Post>({
+        status: Status.OK,
+        statusCode: StatusCode.OK,
+        responseMessage: `ID:${postId}のデータを更新しました`,
+        data: updatePost,
+        error: undefined
+      })
+      return response
+    } catch (error) {
+      const response = new ResponseReturn<Post>({
+        status: Status.InternalServerError,
+        statusCode: StatusCode.InternalServerError,
+        responseMessage: 'サーバーとの通信に失敗しました',
+        data: undefined,
+        error: error
+      })
+      return response
+    }
+  }
+
+  async deletePost({ postId }: { postId: number }) {
+    if (typeof postId != 'number') {
+      const response = new ResponseReturn<Post>({
+        status: Status.BadRequest,
+        statusCode: StatusCode.BadRequest,
+        responseMessage: 'postIdの不正な値が入力されています',
+        data: undefined,
+        error: undefined
+      })
     }
   }
 }
