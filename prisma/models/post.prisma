@@ -1,11 +1,14 @@
+import { User } from "user"
 import { Tag } from 'tag'
 
 model Post {
   postId      Int      @id @default(autoincrement())
-  titile      String
+  title       String
   description String
   body        String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   tags        Tag[]
+  userId      Int
+  user        User     @relation(fields: [userId], references: [userId])
 }
