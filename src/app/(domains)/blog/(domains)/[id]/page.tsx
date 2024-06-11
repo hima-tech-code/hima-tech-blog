@@ -9,7 +9,7 @@ import './id.module.css'
 const Page = ({ params }: { params: { id: number } }) => {
 
 
-  const path = `/blog/md/${params.id}.md`
+  const path = `public/blog/md/${params.id}.md`
 
   const data = params.id !== null
     ? fs.readFileSync(path, 'utf-8')
